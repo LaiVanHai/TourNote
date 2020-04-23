@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -63,10 +64,18 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "Search Button selected", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.about:
-                Toast.makeText(this, "About button selected", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ContactActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString(ContactActivity.KEY_SHOW_WHAT, ContactActivity.VALUE_SHOW_ABOUT);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
             case R.id.help:
-                Toast.makeText(this, "Help button selected", Toast.LENGTH_SHORT).show();
+                intent = new Intent(this, ContactActivity.class);
+                bundle = new Bundle();
+                bundle.putString(ContactActivity.KEY_SHOW_WHAT, ContactActivity.VALUE_SHOW_HELP);
+                intent.putExtras(bundle);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);
