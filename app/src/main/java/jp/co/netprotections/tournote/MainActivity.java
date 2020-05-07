@@ -3,8 +3,12 @@ package jp.co.netprotections.tournote;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
@@ -19,7 +23,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FirstFragment.OnFirstFragmentListener {
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
     @Override
@@ -33,6 +37,31 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        FirstFragment firstFragment = new FirstFragment();
+        if (findViewById(R.id.contentFrame) != null) {
+            if (savedInstanceState != null) {
+                getSupportFragmentManager().executePendingTransactions();
+                Fragment fragmentById = getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+                if (fragmentById != null) {
+                    getSupportFragmentManager().beginTransaction().remove(fragmentById).commit();
+                }
+            }
+            getSupportFragmentManager().beginTransaction().add(R.id.contentFrame, firstFragment).commit();
+        } else {
+            if (savedInstanceState != null) {
+                getSupportFragmentManager().executePendingTransactions();
+                Fragment firstFragmentById = getSupportFragmentManager().findFragmentById(R.id.firstFrame);
+                if (firstFragmentById != null) {
+                    getSupportFragmentManager().beginTransaction().remove(firstFragmentById).commit();
+                }
+                Fragment secondFragmentById = getSupportFragmentManager().findFragmentById(R.id.secondFrame);
+                if (secondFragmentById != null) {
+                    getSupportFragmentManager().beginTransaction().remove(secondFragmentById).commit();
+                }
+                getSupportFragmentManager().beginTransaction().add(R.id.firstFrame, firstFragment).commit();
+            }
+        }
     }
 
     @Override
@@ -79,5 +108,23 @@ public class MainActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemPressed(String content) {
+        SecondFragment secondFragment = SecondFragment.newInstance(content);
+        if (findViewById(R.id.contentFrame) !=null ){
+            // Found the ID of only one Fragment ==> Portrait mode
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.contentFrame, secondFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        } else {
+            // Landscape mode
+            getSupportFragmentManager().beginTransaction().replace(R.id.secondFrame, secondFragment).commit();
+        }
+
+
     }
 }
