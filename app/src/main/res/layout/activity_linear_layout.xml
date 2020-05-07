@@ -4,22 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/null_text"
+    <FrameLayout
+        android:id="@+id/firstFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:textSize="15sp" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <ImageView
+    <FrameLayout
+        android:id="@+id/secondFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/null_text"
-        android:layout_centerHorizontal="true"
-        android:scaleType="fitCenter"
-        android:layout_marginTop="8dp"
-        app:srcCompat="@drawable/empty_note" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </RelativeLayout>
